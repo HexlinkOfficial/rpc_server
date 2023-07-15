@@ -2,15 +2,15 @@ import express from "express";
 import bodyParser from "body-parser";
 import { JSONRPCServer } from "json-rpc-2.0";
 
-import { getValues, setKeyValues, deleteValues } from "./handlers/keyvalue";
+import { getValues, setKeyValues, deleteValues } from "./handlers/kv";
 import { genAndSendOtp, validateOtpAndSign } from "./handlers/otp";
 import { authMiddleware } from "./middleware/auth";
 
 const server = new JSONRPCServer();
 
-server.addMethod("keyvalue_get", ({ keys }, user: any) => getValues(user, keys));
-server.addMethod("keyvalue_put", ({ requests }, user: any) => setKeyValues(user, requests));
-server.addMethod("keyvalue_delete", ({ keys }, user: any) => deleteValues(user, keys));
+server.addMethod("kv_get", ({ keys }, user: any) => getValues(user, keys));
+server.addMethod("kv_put", ({ requests }, user: any) => setKeyValues(user, requests));
+server.addMethod("kv_del", ({ keys }, user: any) => deleteValues(user, keys));
 server.addMethod("auth_sendOtp", ({ }, user: any) => genAndSendOtp(user));
 server.addMethod("auth_validateOtpAndSign", ({ otp }, user: any) => validateOtpAndSign(user, otp));
 
