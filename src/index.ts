@@ -2,16 +2,16 @@ import express from 'express'
 import bodyParser from 'body-parser'
 import { type JSONRPCResponse, JSONRPCServer } from 'json-rpc-2.0'
 
-import { getValues, setKeyValues, deleteValues } from './handlers/kv'
+import { getValues, setKeyValues, deleteValues } from './handlers/config'
 import { genAndSendOtp, validateOtpAndSign } from './handlers/otp'
 import { authMiddleware } from './middleware/auth'
 import { CustomError } from './utils/types'
 
 const server = new JSONRPCServer()
 
-server.addMethod('kv_get', async ({ keys }, user: any) => await getValues(user, keys))
-server.addMethod('kv_put', async ({ requests }, user: any) => await setKeyValues(user, requests))
-server.addMethod('kv_del', async ({ keys }, user: any) => await deleteValues(user, keys))
+server.addMethod('config_get', async ({ keys }, user: any) => await getValues(user, keys))
+server.addMethod('config_put', async ({ requests }, user: any) => await setKeyValues(user, requests))
+server.addMethod('config_del', async ({ keys }, user: any) => await deleteValues(user, keys))
 server.addMethod('auth_sendOtp', async (_request, user: any) => await genAndSendOtp(user))
 server.addMethod('auth_validateOtpAndSign', async ({ otp }, user: any) => await validateOtpAndSign(user, otp))
 
