@@ -1,9 +1,9 @@
-import type { Token } from "../utils/types";
+import type { Token } from '../utils/types'
 
-export function buildAuthenticationNotification(receipt: string, otp: string) {
-  receipt = receipt.toLowerCase();
+export function buildAuthenticationNotification (receipt: string, otp: string): any {
+  receipt = receipt.toLowerCase()
   return {
-    from: "Hexlink <no-reply@hexlink.io>",
+    from: 'Hexlink <no-reply@hexlink.io>',
     to: receipt,
     subject: `Hexlink Confirmation Code: ${otp}`,
     text: `Hi,\n\nThank you for choosing Hexlink. Use the following OTP to confirm your transaction procedures. OTP is valid for 5 minute.\n${otp}\n\nRegards,\nHexlink`,
@@ -85,19 +85,19 @@ export function buildAuthenticationNotification(receipt: string, otp: string) {
             <!--/100% body table-->
         </body>
   
-        </html>`,
-  };
+        </html>`
+  }
 }
 
-export function buildNewTransferNotification(
-    sender: string,
-    receipt: string,
-    token: Token,
-    sendAmount: string
-) {
-  receipt = receipt.toLowerCase();
+export function buildNewTransferNotification (
+  sender: string,
+  receipt: string,
+  token: Token,
+  sendAmount: string
+): any {
+  receipt = receipt.toLowerCase()
   return {
-    from: "Hexlink <no-reply@hexlink.io>",
+    from: 'Hexlink <no-reply@hexlink.io>',
     to: receipt,
     subject: `You received ${token.symbol}!`,
     text: `Hi,\n\nThank you for choosing Hexlink. ${sender} sends you ${sendAmount}&nbsp; ${token.symbol}!\n\nRegards,\nHexlink`,
@@ -206,18 +206,18 @@ export function buildNewTransferNotification(
               </table>
               <!--/100% body table-->
           </body>
-        </html>`,
-  };
+        </html>`
+  }
 }
 
-export function buildNotifyTransferSmsMessage(
-    sender: string,
-    token: Token,
-    sendAmount: string
-) : string {
-  return `${sender} sends you ${sendAmount} ${token.symbol}!`;
+export function buildNotifyTransferSmsMessage (
+  sender: string,
+  token: Token,
+  sendAmount: string
+): string {
+  return `${sender} sends you ${sendAmount} ${token.symbol}!`
 }
 
-export function buildSmsOtpMessage(otp: string) : string {
-  return `Your Hexlink verification code is ${otp}, do not share it with anyone.`;
+export function buildSmsOtpMessage (otp: string): string {
+  return `Your Hexlink verification code is ${otp}, do not share it with anyone.`
 }
