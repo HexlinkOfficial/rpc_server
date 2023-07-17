@@ -16,14 +16,12 @@ export async function get (req: GetConfigRequest): Promise<any> {
   const docRef = db.collection(req.config).doc(getUserId(req.user))
   const config = await docRef.get()
   if (!config.exists) {
-    throw new CustomError(-32502, 'config not found')
-  } else {
-    if (req.key === null) {
-      return config.data()
-    } else {
-      return config.get(req.key)
-    }
+    return null
   }
+  if (req.key === null) {
+    return config.data()
+  }
+  return config.get(req.key)
 }
 
 export async function set (req: SetConfigRequest): Promise<boolean> {

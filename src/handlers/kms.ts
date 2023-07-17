@@ -1,4 +1,3 @@
-/* eslint-disable require-jsdoc */
 import * as kms from '@google-cloud/kms'
 import * as asn1 from 'asn1.js'
 import * as crypto from 'crypto'

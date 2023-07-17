@@ -7,7 +7,7 @@ import {
   type SetConfigRequest,
   type SetConfigResponse
 } from '../utils/types'
-import { get, set, del } from './firestore'
+import { get, set, del } from '../db/redis'
 
 const SUPPORTED_CONFIGS = new Set<string>([])
 

@@ -19,6 +19,7 @@ import {
 import { getConfig, setConfig } from './config_store'
 import { buildAuthenticationNotification } from './notification'
 import { ethers } from 'ethers'
+import { now } from '../utils/utils'
 
 interface EmailData {
   [key: string]: string
@@ -51,10 +52,6 @@ const randomCode = (length: number): string => {
     code += CHARS[Math.floor(Math.random() * len)]
   }
   return code
-}
-
-const now = (): number => {
-  return Math.floor(new Date().getTime() / 1000)
 }
 
 export const sendEmail = async (data: EmailData): Promise<void> => {
