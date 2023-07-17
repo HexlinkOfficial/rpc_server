@@ -16,51 +16,9 @@ The config store must authenticate users before executing. It must read the firs
 
 ### RPC Interface
 
+The request and response types are defined at [here](https://github.com/HexlinkOfficial/rpc_server/blob/main/src/utils/types.ts).
+
 ```
-export interface CustomError extends Error {
-   code: number
-   message: string
-}
-
-export interface User {
-   account: string;
-   idType: string;
-}
-export interface Request {
-  user: User
-  version: number
-}
-
-export interface GetConfigRequest extends Request {
-  keys: string[]
-}
-
-export interface GetConfigResponse {
-  response: Record<string, string | CustomError>
-}
-
-export interface ConfigSetItem {
-  key: string
-  value: string
-  overwrite: boolean // default false
-}
-
-export interface SetConfigRequest extends Request {
-  requests: ConfigSetItem[]
-}
-
-export interface SetConfigResponse {
-  response: Record<string, boolean | CustomError>
-}
-
-export interface DelConfigRequest extends Request {
-  keys: string[]
-}
-
-export interface DelConfigResponse {
-  response: Record<string, boolean | CustomError>
-}
-
 service HexlinkConfigStore {
   function config_get(GetConfigRequest): GetConfigResponse;
 
@@ -72,22 +30,11 @@ service HexlinkConfigStore {
 
 ## Authentication
 
+### RPC Interface
+
+The request and response types are defined at [here](https://github.com/HexlinkOfficial/rpc_server/blob/main/src/utils/types.ts).
+
 ```
-export interface SendOtpRequest extends Request { }
-
-export interface SendOtpResponse {
-  sentAt: number
-}
-
-export interface ValidateOtpRequest extends Request {
-  code: string
-  requestId: string // extra message to sign
-}
-
-export interface ValidateOtpResponse {
-  signature: string
-}
-
 service HexlinkAuth {
   function auth_sendOtp(SendOtpRequest): SendOtpResponse
 
@@ -95,7 +42,7 @@ service HexlinkAuth {
 }
 ```
 
-### Sybil/DoS Attack Prevention
+## Sybil/DoS Attack Prevention
 
 The authentication rpc calls are used to authenticate users which means anyone can call the service. Rpc node runners will need to figure out a way to prevent spams or DDoS attacks. We can apply a token staking mechanism to prevent it from happening. THe details are TBD.
 
