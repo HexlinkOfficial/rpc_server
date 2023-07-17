@@ -4,7 +4,7 @@ import * as asn1 from 'asn1.js'
 import * as crypto from 'crypto'
 import * as ethers from 'ethers'
 import * as crc32c from 'fast-crc32c'
-import * as BN from 'bn.js'
+import BN from 'bn.js'
 import { Signature } from 'ethers'
 import { CustomError } from '../utils/types'
 

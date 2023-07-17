@@ -4,6 +4,7 @@ import { type JSONRPCResponse, JSONRPCServer } from 'json-rpc-2.0'
 
 import { getConfig, setConfig, deleteConfig } from './handlers/config_store'
 import { sendOtp, validateOtp } from './handlers/otp'
+import { rateLimitMiddleware } from './middleware/ratelimit'
 import { authMiddleware } from './middleware/auth'
 import { CustomError } from './utils/types'
 
@@ -15,7 +16,7 @@ server.addMethod('config_del', async (request) => await deleteConfig(request))
 server.addMethod('auth_sendOtp', async (request) => await sendOtp(request))
 server.addMethod('auth_validateOtp', async (request) => await validateOtp(request))
 
-server.applyMiddleware(authMiddleware)
+server.applyMiddleware(rateLimitMiddleware, authMiddleware)
 
 const app = express()
 app.use(bodyParser.json())
@@ -36,7 +37,7 @@ app.post('/rpc/', (req: any, res: any) => {
         if (err instanceof CustomError) {
           res.status(err.code).send(err.message)
         } else {
-          res.status(-32603).send('internal error')
+          res.status(-32603).send('internal server error')
         }
       }
     )
