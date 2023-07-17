@@ -23,6 +23,10 @@ export async function isContract (chain: Chain, address: string): Promise<boolea
   return false
 }
 
+export function getUserId (user: User): string {
+  return `${user.idType}:id.${user.account}`
+}
+
 export async function getAccountAddress (user: User, chain: Chain): Promise<string> {
   if (process.env.VITE_ACCOUNT_FACTORY_V2 === undefined) {
     throw new Error('VITE_ACCOUNT_FACTORY_V2 is not set')

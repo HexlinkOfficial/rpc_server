@@ -17,83 +17,81 @@ The config store must authenticate users before executing. It must read the firs
 ### RPC Interface
 
 ```
-interface Error {
+export interface CustomError extends Error {
    code: number
    message: string
 }
 
-interface User {
+export interface User {
    account: string;
    idType: string;
 }
-
-interface GetConfigRequest {
-   user: User
-   keys: string[]
+export interface Request {
+  user: User
+  version: number
 }
 
-interface GetConfigResponse {
-  [key: string]: string | Error
+export interface GetConfigRequest extends Request {
+  keys: string[]
 }
 
-interface ConfigSetItem {
+export interface GetConfigResponse {
+  response: Record<string, string | CustomError>
+}
+
+export interface ConfigSetItem {
   key: string
   value: string
   overwrite: boolean // default false
 }
 
-interface SetConfigRequest {
-   user: User
-   requests: ConfigSetItem[]
+export interface SetConfigRequest extends Request {
+  requests: ConfigSetItem[]
 }
 
-interface SetConfigResponse {
-  [key: string]: boolean | Error
+export interface SetConfigResponse {
+  response: Record<string, boolean | CustomError>
 }
 
-interface DelConfigRequest {
-   user: User
-   keys: string[]
+export interface DelConfigRequest extends Request {
+  keys: string[]
 }
 
-interface SetConfigResponse {
-  [key: string]: boolean | Error
+export interface DelConfigResponse {
+  response: Record<string, boolean | CustomError>
 }
 
 service HexlinkConfigStore {
-  function config_get(GetConfigRequest): GetConfigResponse | Error;
+  function config_get(GetConfigRequest): GetConfigResponse;
 
-  function config_set(SetConfigRequest): SetConfigResponse | Error;
+  function config_set(SetConfigRequest): SetConfigResponse;
 
-  function config_del(DelConfigRequest): DelConfigResponse | Error;
+  function config_del(DelConfigRequest): DelConfigResponse;
 }
 ```
 
 ## Authentication
 
 ```
-interface SendOtpRequest {
-  user: User
+export interface SendOtpRequest extends Request { }
+
+export interface SendOtpResponse {
+  sentAt: number
 }
 
-interface SendOtpResponse {
-  sentAt: integer
+export interface ValidateOtpRequest extends Request {
+  code: string
+  requestId: string // extra message to sign
 }
 
-interface ValidateOtpRequest {
-  user: User
-  code: string;
-  requestId: string; // extra message to sign
-}
-
-interface ValidateOtpSuccess {
-  signature: string;
+export interface ValidateOtpResponse {
+  signature: string
 }
 
 service HexlinkAuth {
-  function auth_sendOtp(SendOtpRequest): SendOtpResponse | Error
+  function auth_sendOtp(SendOtpRequest): SendOtpResponse
 
-  function auth_validateOtp(ValidateOtpRequest): ValidateOtpSuccess | Error
+  function auth_validateOtp(ValidateOtpRequest): ValidateOtpSuccess
 }
 ```
 

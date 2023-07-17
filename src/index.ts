@@ -2,18 +2,18 @@ import express from 'express'
 import bodyParser from 'body-parser'
 import { type JSONRPCResponse, JSONRPCServer } from 'json-rpc-2.0'
 
-import { getValues, setKeyValues, deleteValues } from './handlers/config'
-import { genAndSendOtp, validateOtpAndSign } from './handlers/otp'
+import { getConfig, setConfig, deleteConfig } from './handlers/config_store'
+import { sendOtp, validateOtp } from './handlers/otp'
 import { authMiddleware } from './middleware/auth'
 import { CustomError } from './utils/types'
 
 const server = new JSONRPCServer()
 
-server.addMethod('config_get', async ({ keys }, user: any) => await getValues(user, keys))
-server.addMethod('config_put', async ({ requests }, user: any) => await setKeyValues(user, requests))
-server.addMethod('config_del', async ({ keys }, user: any) => await deleteValues(user, keys))
-server.addMethod('auth_sendOtp', async (_request, user: any) => await genAndSendOtp(user))
-server.addMethod('auth_validateOtpAndSign', async ({ otp }, user: any) => await validateOtpAndSign(user, otp))
+server.addMethod('config_get', async (request) => await getConfig(request))
+server.addMethod('config_put', async (request) => await setConfig(request))
+server.addMethod('config_del', async (request) => await deleteConfig(request))
+server.addMethod('auth_sendOtp', async (request) => await sendOtp(request))
+server.addMethod('auth_validateOtp', async (request) => await validateOtp(request))
 
 server.applyMiddleware(authMiddleware)
 
@@ -22,22 +22,21 @@ app.use(bodyParser.json())
 
 app.post('/rpc/', (req: any, res: any) => {
   const jsonRPCRequest = req.body
-  const user = req.user
   server
-    .receive(jsonRPCRequest, user)
+    .receive(jsonRPCRequest)
     .then(
       (jsonRPCResponse: JSONRPCResponse | null) => {
         if (jsonRPCResponse != null) {
           res.json(jsonRPCResponse)
         } else {
-          res.sendStatus(204)
+          res.status(-32501).send('no content') // no content
         }
       },
       (err: any) => {
         if (err instanceof CustomError) {
           res.status(err.code).send(err.message)
         } else {
-          res.status(500)
+          res.status(-32603).send('internal error')
         }
       }
     )

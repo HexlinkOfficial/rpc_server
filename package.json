@@ -14,16 +14,23 @@
   "author": "dongshu2013",
   "license": "ISC",
   "dependencies": {
+    "@google-cloud/firestore": "^6.6.1",
+    "@google-cloud/kms": "^3.7.0",
     "@hexlink/contracts": "^0.9.3",
+    "asn1.js": "^5.4.1",
+    "bn.js": "^5.2.1",
     "ethers": "^6.6.3",
+    "fast-crc32c": "^2.0.0",
     "json-rpc-2.0": "^1.6.0",
     "libphonenumber-js": "^1.10.37",
     "mailgun.js": "^9.2.0",
     "twilio": "^4.14.0"
   },
   "devDependencies": {
+    "@types/bn.js": "^5.1.1",
     "@types/body-parser": "^1.19.2",
     "@types/express": "^4.17.17",
+    "@types/fast-crc32c": "^2.0.0",
     "@typescript-eslint/eslint-plugin": "^5.62.0",
     "eslint": "^8.45.0",
     "eslint-config-standard-with-typescript": "^36.1.0",
